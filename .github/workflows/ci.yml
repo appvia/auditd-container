@@ -23,7 +23,6 @@ jobs:
         with:
           images: |
             ghcr.io/${{ github.repository }}
-            ${{ github.repository }}
           flavor: |
             latest=true
           tags: |
