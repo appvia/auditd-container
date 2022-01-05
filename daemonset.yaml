@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: auditd
+spec:
+  selector:
+    matchLabels:
+      name: auditd
+  template:
+    metadata:
+      labels:
+        name: auditd
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      hostPID: true
+      hostIPC: true
+
+      containers:
+        - name: auditd
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - CAP_AUDIT_CONTROL
+                - CAP_AUDIT_READ
+                - CAP_AUDIT_WRITE
+                - CAP_SYS_NICE
+          image: ghcr.io/appvia/auditd-container:latest
+          # args: ['sh', '-c', 'apk add --no-cache audit && auditd -n']
+          volumeMounts:
+          - mountPath: /var/log/audit
+            name: auditlog
+      volumes:
+      - hostPath:
+          path: /var/log/audit
+          type: DirectoryOrCreate
+        name: auditlog
