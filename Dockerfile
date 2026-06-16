@@ -1,4 +1,4 @@
-FROM alpine:3.18.0@sha256:02bb6f428431fbc2809c5d1b41eab5a68350194fb508869a33cb1af4444c9b11
+FROM alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b
 RUN apk add --no-cache audit
 VOLUME /var/log/audit
 CMD /usr/sbin/auditd -n
